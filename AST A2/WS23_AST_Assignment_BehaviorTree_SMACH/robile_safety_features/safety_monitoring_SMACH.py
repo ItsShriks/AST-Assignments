@@ -18,8 +18,8 @@ class MonitorBatteryAndCollision(smach.State):
         self.node = node
         self.battery_subscriber = self.node.create_subscription(String, '/battery_topic', self.battery_callback, 10)
         self.collision_subscriber = self.node.create_subscription(LaserScan, '/scan', self.collision_callback, 10)
-        self.battery_threshold = 30.0  # Example threshold for low battery
-        self.collision_threshold = 0.2  # Example threshold for collision detection
+        self.battery_threshold = 30.0  #threshold for low battery
+        self.collision_threshold = 0.2  #threshold for collision detection
 
     def battery_callback(self, msg):
         # TODO: Implement logic to check battery level and set appropriate outcomes
@@ -43,15 +43,12 @@ class MonitorBatteryAndCollision(smach.State):
 
     def execute(self, userdata):
         # TODO: Implement state execution logic and return outcome
-        # This is just a basic example, you should adapt it based on your needs
         self.node.get_logger().info('Executing MonitorBatteryAndCollision state...')
-        # Example: Publish a Twist message to stop the robot
-        twist = Twist()
+        twist = Twist() # Publish a Twist message to stop the robot
         twist.linear.x = 0.0
         twist.angular.z = 0.0
         self.node.get_logger().info('Publishing Twist message to stop the robot...')
         # TODO: Publish the twist message
-        time.sleep(2)  # Simulating some processing time
         return 'normal'
 
 
@@ -72,7 +69,6 @@ class RotateBase(smach.State):
         twist.angular.z = 0.5  # Example angular velocity for rotation
         self.node.get_logger().info('Publishing Twist message to rotate the robot...')
         # TODO: Publish the twist message
-        time.sleep(2)  # Simulating some processing time
         return 'rotate_complete'
 
 
