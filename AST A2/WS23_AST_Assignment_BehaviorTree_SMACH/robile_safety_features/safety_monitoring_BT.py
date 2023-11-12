@@ -28,8 +28,7 @@ def create_root() -> pt.behaviour.Behaviour:
     Colliding = pt.behaviours.Condition("LaserScan2bb")
     BatteryLow = pt.behaviours.Condition("LaserScan2bb")
     StopPlatform = pt.behaviours.Condition("LaserScan2bb")
-
-    RotatePlatform = pt
+    
     ### we create an "Idle" node, which is a running node to keep the robot idle
     idle = pt.behaviours.Running(name="Idle")
     
