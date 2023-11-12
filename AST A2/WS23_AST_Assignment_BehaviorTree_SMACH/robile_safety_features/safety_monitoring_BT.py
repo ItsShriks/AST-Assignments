@@ -7,7 +7,7 @@ import operator
 import py_trees.console as console
 import rclpy
 import sys
-from robile_safety_features.behaviors import *
+from behaviors import *
 
 
 def create_root() -> pt.behaviour.Behaviour:
@@ -23,12 +23,12 @@ def create_root() -> pt.behaviour.Behaviour:
     ### we create a sequence node called "Topics2BB" and a selector node called "Priorities"
     topics2BB = pt.composites.Sequence("Topics2BB", memory=False)
     priorities = pt.composites.Selector("Priorities", memory=False)
-    Battery2BB = pt.behaviours.Condition("BatteryStatus2bb")
-    LaserScan2BB = pt.behaviours.Condition("LaserScan2bb")
+    Battery2BB = pt.behaviours.Action("BatteryStatus2bb")
+    LaserScan2BB = pt.behaviours.Action("LaserScan2bb")
     Colliding = pt.behaviours.Condition("LaserScan2bb")
     BatteryLow = pt.behaviours.Condition("LaserScan2bb")
-    StopPlatform = pt.behaviours.Condition("LaserScan2bb")
-    
+    StopPlatform = pt.behaviours.Action("LaserScan2bb")
+
     ### we create an "Idle" node, which is a running node to keep the robot idle
     idle = pt.behaviours.Running(name="Idle")
     
