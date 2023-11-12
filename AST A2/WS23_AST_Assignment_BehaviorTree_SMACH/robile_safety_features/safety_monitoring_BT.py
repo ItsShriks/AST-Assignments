@@ -1,3 +1,4 @@
+#ItsShriks
 #!/usr/bin/env python3
 
 import py_trees as pt
@@ -23,11 +24,10 @@ def create_root() -> pt.behaviour.Behaviour:
     ### we create a sequence node called "Topics2BB" and a selector node called "Priorities"
     topics2BB = pt.composites.Sequence("Topics2BB", memory=False)
     priorities = pt.composites.Selector("Priorities", memory=False)
-    Battery2BB = pt.behaviours.Action("BatteryStatus2bb")
-    LaserScan2BB = pt.behaviours.Action("LaserScan2bb")
-    Colliding = pt.behaviours.Condition("LaserScan2bb")
-    BatteryLow = pt.behaviours.Condition("LaserScan2bb")
-    StopPlatform = pt.behaviours.Action("LaserScan2bb")
+    rotation = Rotate()
+    stop = StopMotion()
+    laser_scan = LaserScan2bb()
+    batterystats = BatteryStatus2bb()
 
     ### we create an "Idle" node, which is a running node to keep the robot idle
     idle = pt.behaviours.Running(name="Idle")
@@ -49,10 +49,10 @@ def create_root() -> pt.behaviour.Behaviour:
     # HINT: for reference, the sample tree structure in the README.md file might be useful
 
     root.add_children([topics2BB, priorities])
-    topics2BB.add_children([Battery2BB, LaserScan2BB])
-    priorities.add_children([Colliding, BatteryLow, idle])
-    Colliding.add_children([StopPlatform])
-    BatteryLow.add_children([RotatePlatform])
+    topics2BB.add_children([batterystats, laser_scan])
+    priorities.add_children([stop, batterystats, idle])
+    stop.add_children([StopPlatform])
+    batterystats.add_children([RotatePlatform])
     
     ### YOUR CODE HERE ###
 
