@@ -25,9 +25,9 @@ def create_root() -> pt.behaviour.Behaviour:
     priorities = pt.composites.Selector("Priorities", memory=False)
     Battery2BB = pt.behaviours.Condition("BatteryStatus2bb")
     LaserScan2BB = pt.behaviours.Condition("LaserScan2bb")
-    Colliding = pt.behaviours.Condition
-    BatteryLow = pt.behaviours.
-    StopPlatform = pt.
+    Colliding = pt.behaviours.Condition("LaserScan2bb")
+    BatteryLow = pt.behaviours.Condition("LaserScan2bb")
+    StopPlatform = pt.behaviours.Condition("LaserScan2bb")
 
     RotatePlatform = pt
     ### we create an "Idle" node, which is a running node to keep the robot idle
@@ -50,8 +50,11 @@ def create_root() -> pt.behaviour.Behaviour:
     # HINT: for reference, the sample tree structure in the README.md file might be useful
 
     root.add_children([topics2BB, priorities])
-    topics2BB.add_children([])
-
+    topics2BB.add_children([Battery2BB, LaserScan2BB])
+    priorities.add_children([Colliding, BatteryLow, idle])
+    Colliding.add_children([StopPlatform])
+    BatteryLow.add_children([RotatePlatform])
+    
     ### YOUR CODE HERE ###
 
     return root
