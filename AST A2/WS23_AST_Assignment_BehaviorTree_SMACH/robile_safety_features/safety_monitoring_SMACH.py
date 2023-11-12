@@ -17,7 +17,7 @@ class MonitorBatteryAndCollision(smach.State):
         # TODO: Define class variables and set up necessary publishers/subscribers
         self.node = node
         self.battery_subscriber = self.node.create_subscription(String, '/battery_topic', self.battery_callback, 10)
-        self.collision_subscriber = self.node.create_subscription(LaserScan, '/collision_topic', self.collision_callback, 10)
+        self.collision_subscriber = self.node.create_subscription(LaserScan, '/scan', self.collision_callback, 10)
         self.battery_threshold = 30.0  # Example threshold for low battery
         self.collision_threshold = 0.2  # Example threshold for collision detection
 
@@ -28,7 +28,6 @@ class MonitorBatteryAndCollision(smach.State):
             self.node.get_logger().info('Low battery detected!')
             self.node.get_logger().info('Battery level: {}'.format(battery_level))
             self.node.get_logger().info('Stopping...')
-            self.node.get_logger().info('Transitioning to low_battery state')
             return 'low_battery'
         return 'normal'
 
@@ -37,7 +36,6 @@ class MonitorBatteryAndCollision(smach.State):
         min_distance = min(msg.ranges)
         if min_distance < self.collision_threshold:
             self.node.get_logger().info('Collision detected!')
-            self.node.get_logger().info('Minimum distance: {}'.format(min_distance))
             self.node.get_logger().info('Stopping...')
             self.node.get_logger().info('Transitioning to collision state')
             return 'collision'
@@ -86,6 +84,7 @@ def main(args=None):
     sm = smach.StateMachine(outcomes=['outcome'])
 
     with sm:
+        smach.StateMachine.add('IDLE', Idle(node), transitions={'activated': 'MONITOR_BATTERY_COLLISION'})
         smach.StateMachine.add('MONITOR_BATTERY_COLLISION', MonitorBatteryAndCollision(node),
                                transitions={'low_battery': 'ROTATE_BASE',
                                             'collision': 'MONITOR_BATTERY_COLLISION',
@@ -108,3 +107,9 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+'''
+#Reference - 
+CalStateLA ASME
+https://wiki.ros.org/smach/Tutorials
+
+'''
